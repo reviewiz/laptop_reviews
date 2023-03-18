@@ -25,19 +25,19 @@
           <label for="Price_range">Price Range:</label>
           <div class="Checkbox_list">
             <input name="Price_range" type="hidden" value="0,0"/>
-            <input class="form-check-input" type="checkbox" name="Price_range" value="1,29999" id="1,29999">
+            <input class="form-check-input" type="radio" name="Price_range" value="1,29999" id="1,29999">
             <label class="form-check-label" for="1,29999">&#60; 30000</label>
             <br>
-            <input class="form-check-input" type="checkbox" name="Price_range" value="30000,39999" id="30000,39999">
+            <input class="form-check-input" type="radio" name="Price_range" value="30000,39999" id="30000,39999">
             <label class="form-check-label" for="30000,39999">30000 - 40000</label>
             <br>
-            <input class="form-check-input" type="checkbox" name="Price_range" value="40000,59999" id="40000,59999">
+            <input class="form-check-input" type="radio" name="Price_range" value="40000,59999" id="40000,59999">
             <label class="form-check-label" for="40000,59999">40000 - 60000</label>
             <br>
-            <input class="form-check-input" type="checkbox" name="Price_range" value="60000,79999" id="60000,79999">
+            <input class="form-check-input" type="radio" name="Price_range" value="60000,79999" id="60000,79999">
             <label class="form-check-label" for="60000,79999">60000 - 80000</label>
             <br>
-            <input class="form-check-input" type="checkbox" name="Price_range" value="80000,-1" id="80000,-1">
+            <input class="form-check-input" type="radio" name="Price_range" value="80000,-1" id="80000,-1">
             <label class="form-check-label" for="80000,-1">&#62; 80000</label>
           </div>
         <br>
@@ -117,7 +117,7 @@
     </div>      
   </form>  
   <br>
-  <button id ="toggle_button">
+  <button class ="load_more_btn" id ="toggle_button">
     Load more
   </button>
   <br>
@@ -211,10 +211,11 @@
         background-color: #3333339e;
       }
       .form_holder {
-      display:flex;
-      flex-direction:column;
-      width: 25%;
-      background-color: #4c4c4c9e;
+        display:flex;
+        flex-direction:column;
+        width: 27%;
+        padding-left:2%;
+        background-color: #4c4c4c9e;
       }
     .search_display{
       padding-left:2%;

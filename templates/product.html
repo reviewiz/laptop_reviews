@@ -1,4 +1,4 @@
-
+{% extends 'base.html' %}
 <!-- page title-->
 {% block title %}
   {{data.Product_name}}
@@ -33,30 +33,111 @@
           <span><h5>Average Rating : {{data.Avg_rev_rating}}</h5></span>
       </div>
       <br>
-      <div class="analysis">  
-          {% if data.Avg_rev_rating == 0.0 %}
+      <div class="Tabs">
+        <ul class="tabs">
+          <li data-tab-target="#charts" class="active tab">Charts</li>
+          <li data-tab-target="#details" class="tab">Details</li>
+          <li data-tab-target="#aspect" class="tab">Reviews</li>
+        </ul>  
+        <div class="tab-content">
           <br>
-          <a href="{{data.Review_link}}"><button>There is nothing to see here, Avert your eyes!</button></a>
-          {% else %}
+          <div id="charts" data-tab-content class="active">
+              <div class="analysis">  
+                {% if data.Avg_rev_rating == 0.0 %}
+                <br>
+                <a href="{{data.Review_link}}"><button>There is nothing to see here, Avert your eyes!</button></a>
+                {% else %}
+                  <br>
+                  <span class="rat_chart">
+                    <canvas id="ratings"></canvas>
+                    <h6>Number of votes for each star</h6>
+                  </span>
+                  <br>
+                  <span class="tone_chart">
+                    <canvas id="tone"></canvas>
+                    <h6>Tone of the reviews</h6>
+                  </span>
+                  <br>
+                {% endif %}
+            </div>
             <br>
-            <span class="rat_chart">
-              <canvas id="ratings"></canvas>
-              <h6>Number of votes for each star</h6>
-            </span>
-            <br>
-            <span class="tone_chart">
-              <canvas id="tone"></canvas>
-              <h6>Tone of the reviews</h6>
-            </span>
-            <br>
-          {% endif %}
+          </div>
+          <div id="details" data-tab-content>
+            <table>
+            {% for i in table%}
+              <tr>
+                <th>{{i.th}}</th>
+                <td>{{i.td}}</td>
+              </tr>
+            {% empty %}
+              <h4>I have failed master!</h4>
+            {% endfor %}
+            </table>
+          </div>
+          <div id="aspect" data-tab-content>
+            <div class="aspect_content">
+              <button type="button" class="collapsible">{{w1}}</button>
+              <div class="btn_content">
+                <ul>
+                  {% for i in s1 %}
+                    <li>
+                      {{i}}
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+              <button type="button" class="collapsible">{{w2}}</button>
+              <div class="btn_content">
+                <ul>
+                  {% for i in s2 %}
+                    <li>
+                      {{i}}
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+              <button type="button" class="collapsible">{{w3}}</button>
+              <div class="btn_content">
+                <ul>
+                  {% for i in s3 %}
+                    <li>
+                      {{i}}
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+              <button type="button" class="collapsible">{{w4}}</button>
+              <div class="btn_content">
+                <ul>
+                  {% for i in s4 %}
+                    <li>
+                      {{i}}
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+              <button type="button" class="collapsible">{{w5}}</button>
+              <div class="btn_content">
+                <ul>
+                  {% for i in s5 %}
+                    <li>
+                      {{i}}
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+
+            </div>
+
+            </div>
+        </div>
       </div>
-      <br>
       <div class="rev_button">
         <br>
-        <a href="{{data.Review_link}}"><button>The two brain cells in the dev's brain is working overtime to put something else here, please wait!</button></a>
+        <a href="{{data.Review_link}}"><button>Don't believe me? See for yourself</button></a>
         <br>
       </div>
+
     </div>
     <div>
     </div>
@@ -130,6 +211,265 @@
                 }
             });
   </script>
+  <script>
+    const tabs = document.querySelectorAll('[data-tab-target]')
+    const tabContents = document.querySelectorAll('[data-tab-content]')
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const target = document.querySelector(tab.dataset.tabTarget)
+        tabContents.forEach(tabContent => {
+          tabContent.classList.remove('active')
+        })
+        tabs.forEach(tab => {
+          tab.classList.remove('active')
+        })
+        tab.classList.add('active')
+        target.classList.add('active')
+      })
+    })
+</script>
+<script>
+  const tabs = document.querySelectorAll('[data-atab-target]')
+  const tabContents = document.querySelectorAll('[data-atab-content]')
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = document.querySelector(tab.dataset.tabTarget)
+      tabContents.forEach(tabContent => {
+        tabContent.classList.remove('active')
+      })
+      tabs.forEach(tab => {
+        tab.classList.remove('active')
+      })
+      tab.classList.add('active')
+      target.classList.add('active')
+    })
+  })
+</script>
+<script>
+  var coll = document.getElementsByClassName("collapsible");
+  var i;
+  
+  for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      var content = this.nextElementSibling;
+      if (content.style.display === "block") {
+        content.style.display = "none";
+      } else {
+        content.style.display = "block";
+      }
+    });
+  }
+  </script>
+  
+
 {% endblock %}
 {% block style %}
+<style>
+  @media (prefers-color-scheme: light) {
+    .main_div{
+      display:flex;
+      flex-direction:row;
+      color:black;
+      justify-content:center;
+      background-color: #eeeeee9e;
+    }
+    .product_link{
+      color: black;
+    }
+  }
+  /* Dark mode */
+  @media (prefers-color-scheme: dark) {
+    .main_div{
+      display:flex;
+      flex-direction:row;
+      justify-content:center;
+      color:white;
+      background-color: #333333be;
+    }
+    .product_link{
+      color: white;
+    }
+  }
+  .image_holder {
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding-left:5%;
+    width: 35%;
+    align-self: flex-start;
+  }
+  .analysis{
+    display:flex;
+    flex-direction:row;
+    justify-content:left;
+    text-align:center;
+  }
+  .rat_chart{
+    height:15vw;
+    width:20vw;
+  }
+  .tone_chart{
+    height:20vw;
+    width:20vw;
+  }
+  .details_holder {
+    display:flex;
+    flex-direction:column;
+    padding-left:5%;
+    width: 65%;
+    text-align: left;
+  }
+  .products_details{
+    padding-top:2%;
+    /*height:50vw;*/
+    align-self: stretch;
+  }
+  .Product_image{
+      height: 280px;
+      width: 340px;
+  }
+  @media all and (max-width: 885px){
+    .main_div{
+      flex-direction:column;
+      justify-content:center;
+    }
+    .image_holder{
+      flex-direction:column;
+      width:100%;
+      padding-left:.5%;
+      margin: auto;
+      justify-content:center;
+    }
+    .image_div{
+      margin:auto;
+    }
+    .analysis{
+      margin:auto;
+     justify-content:center; 
+    }
+    .rat_chart{
+      height:35vw;
+      width:50vw;
+    }
+    .tone_chart{
+      height:50vw;
+      width:50vw;
+    }
+    .details_holder {
+      flex-direction:column;
+      padding-left:0%;
+      width: 100%;
+      text-align: left;
+    }
+    .products_details{
+      width:90%;
+      margin:auto;
+    }
+    .rev_button{
+      margin:auto;
+    }
+  }
+  @media all and (max-width: 500px){
+    .rat_chart{
+      height:55vw;
+      width:85vw;
+    }
+    .tone_chart{
+      height:65vw;
+      width:85vw;
+    }
+    .details_holder {
+      flex-direction:column;
+      padding-left:0%;
+      width: 100%;
+      text-align: left;
+    }
+    .analysis{
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      text-align:center;
+    }
+  }
+  @media all and (max-width: 350px){
+   .Product_image{
+      align: center;
+      height: 230px;
+      width: 280px;
+  } 
+  }
+</style>
+<style>
+  [data-tab-content] {
+      display: none;
+    }
+    
+    .active[data-tab-content] {
+      display: block;
+    }
+    
+    body {
+      padding: 0;
+      margin: 0;
+    }
+    
+    .tabs {
+      display: flex;
+      justify-content: space-around;
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      border-bottom: 1px solid black;
+    }
+    
+    .tab {
+      cursor: pointer;
+      padding: 10px;
+    }
+    
+    .tab.active {
+      background-color: #CCC;
+    }
+    
+    .tab:hover {
+      background-color: #AAA;
+    }
+    
+    .tab-content {
+      margin-left: 20px;
+      margin-right: 20px;
+    }
+</style>
+<style>
+  .collapsible {
+    background-color: #777;
+    color: white;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+  }
+  
+  .active, .collapsible:hover {
+  }
+  
+  .btn_content {
+    padding: 0 18px;
+    display: none;
+    overflow: hidden;
+    background-color: #f1f1f1;
+  }
+  @media (prefers-color-scheme: dark) {
+    .btn_content {
+      background-color: #3E3E3E;
+    }
+  }  
+</style>
+  
 {% endblock %}

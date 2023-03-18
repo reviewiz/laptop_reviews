@@ -1,10 +1,11 @@
 from django.shortcuts import render
 import pandas as pd
+import urllib.request
 # Create your views here.
 def get_advanced_df(data,brand,ub,lb,sort,Processor,RAM,screen,Hard_disk):
     table = pd.DataFrame(columns = data.columns)
     if ub==-1:
-        table=data.loc[data['Price']>100000]
+        table=data.loc[(data['Price']>80000)|(data['Price']>lb)]
     elif lb>0 and ub>0:
         table=data.loc[(data['Price']>lb)&(data['Price']<=ub)]
     else:
@@ -85,7 +86,7 @@ def search(request):
     context={'data':all_data,'Brand':Brand_list,'RAM':RAM_list,'Processor':Processor_list,'screen':screen_list,'Hard_disk':HD_list,'query':message}
     return render(request, 'Search.html',context) 
 def product(request):
-    data = pd.read_csv('https://raw.githubusercontent.com/DibyaSadhukhan/Amazon_Review_Analysis/main/Data/Master_df.csv')
+    data = pd.read_csv('https://raw.githubusercontent.com/DibyaSadhukhan/Amazon_Review_Analysis/main/Data/aspect_word_df.csv')
     code=request.GET['code']
     data=data.drop(data.columns[0], axis=1)
     det=data.loc[data['Product_code']==code]
@@ -94,14 +95,40 @@ def product(request):
     try:
         det['rev_rat_dist']=det['rev_rat_dist'].apply(lambda x: x.split(' '))
         det['rev_tone_dist']=det['rev_tone_dist'].apply(lambda x: x.split(' '))
-        det.iat[0,-2]=[int(ele) for ele in det.iloc[0]['rev_rat_dist']]
-        det.iat[0,-1]=[int(ele) for ele in det.iloc[0]['rev_tone_dist']]
+        det.iat[0,-4]=[int(ele) for ele in det.iloc[0]['rev_rat_dist']]
+        det.iat[0,-3]=[int(ele) for ele in det.iloc[0]['rev_tone_dist']]
     except:
         det['rev_tone_dist']=None
         det['rev_rat_dist']=None
-    det=dict(det.iloc[0])
-    #context={'Image':det['Images'].values[0],'Name':det['Product_name'].values[0],'Rating':det['Rating'].values[0],
-    #'numrev':det['number_of_reveiws'].values[0],'Price':det['Price'].values[0],'avgrat':str(det['Avg_rev_rating'].values[0])[:4],
-    #'Product_link':det['Link'].values[0]}
-    context={'data':det}
+    details=dict(det.iloc[0])
+    del det
+    link="https://raw.githubusercontent.com/DibyaSadhukhan/Amazon_Review_Analysis/main/Data/Details/"
+    response = urllib.request.urlopen(link+code+".txt")
+    Text = response.read()
+    Text = Text.decode("utf-8")
+    Text=Text.split('||')
+    th=[]
+    td=[]
+    for det in Text:
+        th.append(''.join(det.split(':')[0]).strip('\u200e'))
+        td.append(' '.join(det.split(':')[1:]).strip('\u200e'))
+    df = pd.DataFrame({"th":th,"td":td})
+    del th
+    del td
+    del Text
+    table=[]
+    for i in range(df.shape[0]):
+        table.append(dict(df.iloc[i]))
+    del df
+    aspect=pd.read_csv('https://raw.githubusercontent.com/DibyaSadhukhan/Amazon_Review_Analysis/main/Data/aspect_sentences.csv')
+    aspect=aspect.drop(aspect.columns[0], axis=1)
+    aspect=aspect.loc[aspect['Product_code']==code]
+    context={'data':details,'table':table,'w1':aspect['Words'].unique()[0],'w2':aspect['Words'].unique()[1],
+    'w3':aspect['Words'].unique()[2],'w4':aspect['Words'].unique()[3],'w5':aspect['Words'].unique()[4],
+    's1':list(aspect.loc[aspect['Words']==aspect['Words'].unique()[0]]['sentences']),
+    's2':list(aspect.loc[aspect['Words']==aspect['Words'].unique()[1]]['sentences']),
+    's3':list(aspect.loc[aspect['Words']==aspect['Words'].unique()[2]]['sentences']),
+    's4':list(aspect.loc[aspect['Words']==aspect['Words'].unique()[3]]['sentences']),
+    's5':list(aspect.loc[aspect['Words']==aspect['Words'].unique()[4]]['sentences'])
+    }
     return render(request, 'product.html',context)
