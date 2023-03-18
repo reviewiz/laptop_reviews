@@ -1,0 +1,348 @@
+{% extends 'base.html' %}
+<!-- page title-->
+{% block title %}
+  Advanced Search
+{% endblock %}
+{% block page_heading%}
+  Laptop Reviews
+  <!--Page heading-->
+{% endblock %}
+{% block content %}
+  <!--providing query to our database -->
+  <div class="main_div">
+    <div class="form_holder">
+    <br>
+      <form action ='.' method='POST'>{% csrf_token %}
+        <div>
+        <label for="sort">Sort by :</label>
+            <select name="sort" id="sort">
+              <option value="number_of_reveiws">Number of Reviews</option>
+              <option value="Price_A">Price(Ascending)</option>
+              <option value="Price_D">Price(Descending)</option>
+              <option value="Rating">Rating</option>
+            </select>
+          <br>
+          <label for="Price_range">Price Range:</label>
+          <div class="Checkbox_list">
+            <input name="Price_range" type="hidden" value="0,0"/>
+            <input class="form-check-input" type="checkbox" name="Price_range" value="1,29999" id="1,29999">
+            <label class="form-check-label" for="1,29999">&#60; 30000</label>
+            <br>
+            <input class="form-check-input" type="checkbox" name="Price_range" value="30000,39999" id="30000,39999">
+            <label class="form-check-label" for="30000,39999">30000 - 40000</label>
+            <br>
+            <input class="form-check-input" type="checkbox" name="Price_range" value="40000,59999" id="40000,59999">
+            <label class="form-check-label" for="40000,59999">40000 - 60000</label>
+            <br>
+            <input class="form-check-input" type="checkbox" name="Price_range" value="60000,79999" id="60000,79999">
+            <label class="form-check-label" for="60000,79999">60000 - 80000</label>
+            <br>
+            <input class="form-check-input" type="checkbox" name="Price_range" value="80000,-1" id="80000,-1">
+            <label class="form-check-label" for="80000,-1">&#62; 80000</label>
+          </div>
+        <br>
+        <button class ="Search" type = "submit">Search</button>
+        </div>
+        <div class="toggle_division" id ="toggle_div">
+          <br>
+          <label for="Brand">Brand:</label>
+          <div class="Checkbox_list">
+            <input name="Brand" type="hidden" value="Any"/>
+            {% for i in Brand%}
+              <input class="form-check-input" type="checkbox" name="Brand" value="{{i}}" id="{{i}}">
+              <label class="form-check-label" for="{{i}}">
+                {{i}}
+              </label>
+              <br>
+            {%endfor%}
+          </div>
+        <br>
+        <label for="RAM">RAM:</label>
+        <div class="Checkbox_list">
+          <input name="RAM" type="hidden" value="all"/>
+          {% for i in RAM%}
+            {% if i == -1 %}
+
+            {% else %}
+            <input class="form-check-input" type="checkbox" name="RAM" value="{{i}}" id="{{i}}_RAM">
+            <label class="form-check-label" for="{{i}}_RAM">
+              {{i}} GB
+            </label>
+            {% endif %}
+            <br>
+          {%endfor%}
+        </div>
+        <label for="Processor">Processor:</label>
+        <div class="Checkbox_list">
+          <input name="Processor" type="hidden" value="all"/>
+          {% for i in Processor%}
+            <input class="form-check-input" type="checkbox" name="Processor" value="{{i}}" id="{{i}}">
+            <label class="form-check-label" for="{{i}}">
+              {{i}}
+            </label>
+            <br>
+          {%endfor%}
+          <br>
+        </div>
+        <label for="screen">Screen Size:</label>
+        <div class="Checkbox_list">
+          <input name="screen" type="hidden" value="all"/>
+        {% for i in screen%}
+          <input class="form-check-input" type="checkbox" name="screen" value={{i}} id="{{i}}">
+          <label class="form-check-label" for="{{i}}">
+            {{i}}
+          </label>
+          <br>
+        {%endfor%}
+        <br>
+        </div>
+        <label for="Hard_disk">Hard Disk Type:</label>
+        <div class="Checkbox_list">
+          <input name="Hard_disk" type="hidden" value="all"/>
+          {% for i in Hard_disk%}
+          {% if i == "Unknown" %}
+
+          {% else %}
+            <input class="form-check-input" type="checkbox" name="Hard_disk" value="{{i}}" id="{{i}}">
+            <label class="form-check-label" for="{{i}}">
+              {{i}}
+            </label>
+          <br>
+          {% endif %}
+        {%endfor%}
+        </div>
+        <br>      
+      <br>
+    <button class ="Search" type = "submit">Search</button>  
+    </div>      
+  </form>  
+  <br>
+  <button id ="toggle_button">
+    Load more
+  </button>
+  <br>
+  </div>
+    <div class="search_display">
+          <br>
+          <h2 class="message">{{query}}</h2>
+        {% for i in data%}
+        <br>
+        <div class="product_details"> 
+          <div class="image_holder">
+            <img class="Product_image" src="{{i.Images}}" alt="Laptop"></img>    
+          </div>
+          <br>
+          <div class="name_holder">
+            <a class="product_link" href="./Product/?code={{i.Product_code}}">
+            <span class="details"><h4>{{i.Product_name|truncatechars:33}}</h4></span>
+            <br>
+            <span class="details"><h5>Price : &#8377; {{i.Price}}</h5></span>
+            <br>
+            <span class="details"><h5>Rating :{{i.Rating}}  ({{i.number_of_reveiws}})</h5></span>
+          </a>
+            <br>
+          </div>
+          <br> 
+        </div>
+        {% endfor %}
+        <br>
+        {% if data%}
+        <div class="product_details"><h3>That's all we have! :3</h3><br></div><br>
+        {% else %}
+        <a href="#search_form">
+        <div class="product_details"> 
+          <br>
+          <div class="image_holder">
+            <img class="Product_image" src="https://wikiclipart.com/wp-content/uploads/2017/01/Laptop-clipart-pictures-free-images-4.jpg" alt="Priceless Laptop!"></img>    
+          </div>
+          <br>
+          <div class="name_holder">
+            <h4 class="details_holder">The Laptop you really really want!</h4>
+            <span> <h5 class="details_holder">Price : Priceless</h5></span>
+            <span><h5 class="details_holder">Rating :5 out of 5 (A lot of people)</h5></span>
+            <h6>SEARCH AGAIN!</h6>
+            <br>
+          </div>
+          <br> 
+        </div>
+        </a>
+        {% endif %}
+    </div>
+  </div>
+{% endblock %}
+{% block style %}
+  <style>
+    @media (prefers-color-scheme: light) {
+      .main_div{
+        display:flex;
+        flex-direction:row;
+        color:black;
+        justify-content:center;
+        background-color: #eeeeee9e;
+      }
+      .form_holder {
+        display:flex;
+        padding-left:2%;
+        flex-direction:column;
+        width: 27%;
+        background-color: #C3C3C3ee;
+      }
+      .search_display{
+        padding-left:.5%;
+        width:70%;
+        background-color: #e1e1e1de;
+      }
+      .product_details {
+        display:flex;
+        flex-direction:row;
+        background-color: #C3C3C3ee;
+        padding-top:2%;
+        padding-bottom:2%;
+        padding-left:2%;
+      }
+    }
+    /* Dark mode */
+    @media (prefers-color-scheme: dark) {
+      .main_div{
+        display:flex;
+        flex-direction:row;
+        justify-content:center;
+        color:white;
+        background-color: #3333339e;
+      }
+      .form_holder {
+      display:flex;
+      flex-direction:column;
+      width: 25%;
+      background-color: #4c4c4c9e;
+      }
+    .search_display{
+      padding-left:2%;
+      width:70%;
+      }
+    .product_details {
+      display:flex;
+      flex-direction:row;
+      background-color: #4c4c4c9e;
+      padding-top:2%;
+      padding-bottom:2%;
+      padding-left:2%;
+      
+    }
+    }
+    .message{
+      text-align: center;
+    }
+    .image_holder {
+      color: white;
+      width: 40%;
+    }
+    .name_holder {
+      padding-left:10%;
+      width: 60%;
+      margin: auto;
+      text-align: left;
+    }
+    .Product_image{
+        height: 280px;
+        width: 340px;
+    }
+    .Checkbox_list{
+      padding-left:10%;
+      margin: auto;
+      text-align: left;
+    }
+    .toggle_division{
+      display:none;
+    }
+    @media all and (max-width: 885px){
+      .main_div{
+        flex-direction:column;
+      }
+      .Product_image{
+        height: 230px;
+        width: 280px;
+      }
+      .form_holder {
+        display:flex;
+        padding-left:5%;
+        flex-direction:column;
+        margin:auto;
+        width: 97%;
+      }
+      .search_display{
+        padding-left:.5%;
+        width:97%;
+        margin:auto;
+      }
+      .product_details {
+        width:95%;
+        margin:auto;
+      }
+      .name_holder {
+        padding-left:5%;
+      }
+    }
+    @media all and (max-width: 500px){
+      .Product_image{
+        height: 230px;
+        width: 280px;
+      }
+      .main_div{
+        flex-direction:column;
+      }
+      .Product_image{
+        height: 230px;
+        width: 280px;
+      }
+      .form_holder {
+        display:flex;
+        padding-left:5%;
+        flex-direction:column;
+        margin:auto;
+        width: 97%;
+      }
+      .search_display{
+        padding-left:.5%;
+        width:97%;
+        margin:auto;
+      }
+      .product_details {
+        flex-direction:column;
+        width:95%;
+        margin:auto;
+      }
+      .image_holder {
+        display:flex;
+        justify-content:center;
+        width:100%;
+        padding-top:5%;
+        padding-bottom:3%;
+      }
+      .name_holder {
+        padding-left:5%;
+        width:95%;
+      }
+    }
+    @media all and (max-width: 330px){
+      .Product_image{
+        height: 195px;
+        width: 235px;
+      }
+    }
+  </style>
+  <script>
+      const targetDiv=document.getElementById("toggle_div");
+      const btn=document.getElementById("toggle_button");
+      btn.onclick = function (){
+      if(targetDiv.style.display !== "block" ){
+          targetDiv.style.display="block";
+          btn.innerHTML="Load Less"
+      } else{
+          targetDiv.style.display="none";
+          btn.innerHTML="Load More"
+
+      } 
+        };
+  </script>
+{% endblock %}

@@ -1,0 +1,135 @@
+
+<!-- page title-->
+{% block title %}
+  {{data.Product_name}}
+{% endblock %}
+{% block page_heading%}
+  Review Analysis
+  <!--Page heading-->
+{% endblock %}
+{% block link_scripts %}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
+{% endblock %}
+{% block content %}
+  <div class="main_div">
+    <br>
+    <div class="image_holder">
+      <div class="image_div">
+        <br>
+        <img class="Product_image" src="{{data.Images}}" alt="Laptop"></img>
+        <br>
+      </div>
+    </div>
+    <div class="details_holder">
+      <div class="products_details">    
+          <a class="product_link" href="{{data.Link}}"><span><h4>{{data.Product_name}}</h4></span></a>
+          <br>
+          <span> <h5>Price:{{data.Price}}</h5></span>
+          <br>
+          <span><h5>Rating: {{data.Rating}} out of 5</h5></span>
+          <br>
+          <span><h5>Number of Reveiws: {{data.number_of_reviews}}</h5></span>
+          <br>
+          <span><h5>Average Rating : {{data.Avg_rev_rating}}</h5></span>
+      </div>
+      <br>
+      <div class="analysis">  
+          {% if data.Avg_rev_rating == 0.0 %}
+          <br>
+          <a href="{{data.Review_link}}"><button>There is nothing to see here, Avert your eyes!</button></a>
+          {% else %}
+            <br>
+            <span class="rat_chart">
+              <canvas id="ratings"></canvas>
+              <h6>Number of votes for each star</h6>
+            </span>
+            <br>
+            <span class="tone_chart">
+              <canvas id="tone"></canvas>
+              <h6>Tone of the reviews</h6>
+            </span>
+            <br>
+          {% endif %}
+      </div>
+      <br>
+      <div class="rev_button">
+        <br>
+        <a href="{{data.Review_link}}"><button>The two brain cells in the dev's brain is working overtime to put something else here, please wait!</button></a>
+        <br>
+      </div>
+    </div>
+    <div>
+    </div>
+  </div>
+  <script>
+    var rev_list={{data.rev_rat_dist}}
+    const ctx = document.getElementById('ratings').getContext('2d');
+    const ratings = new Chart(ctx, {
+      type: 'bar',
+      data: {
+      labels: ['5 stars', '4 stars', '3 stars', '2 stars', '1 star'],
+      datasets: [{
+      label: 'Ratings',
+      data: rev_list,
+      backgroundColor: [
+        'rgba(255, 206, 86, 0.7)',
+        'rgba(255, 206, 86, 0.7)',
+        'rgba(255, 206, 86, 0.7)',
+        'rgba(255, 206, 86, 0.7)',
+        'rgba(255, 206, 86, 0.7)',
+      ],
+      borderColor: [
+        'rgba(0, 0, 0, .4)',
+        'rgba(0, 0, 0, .4)',
+        'rgba(0, 0, 0, .4)',
+        'rgba(0, 0, 0, .4)',
+        'rgba(0, 0, 0, .4)',
+      ],
+      borderWidth: 2
+      }]
+      },
+    options: {
+      maintainAspectRatio: false,
+      indexAxis: 'y',
+      scales: {
+        
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+    });
+    var tone_list={{data.rev_tone_dist}}
+    var ctx_2 = document.getElementById("tone").getContext('2d');
+            var data_2 = {
+                datasets: [{
+                    data: tone_list,
+                    backgroundColor: [
+                        '#3c8dbc',
+                        '#056608',
+                        '#850101',
+                    ],
+                }],
+                labels: [
+                    'Neutral',
+                    'Good',
+                    'Bad'
+                ]
+            };
+            var myDoughnutChart_2 = new Chart(ctx_2, {
+                type: 'pie',
+                data: data_2,
+                options: {
+                    maintainAspectRatio: false,
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            boxWidth: 12
+                        }
+                    }
+                }
+            });
+  </script>
+{% endblock %}
+{% block style %}
+{% endblock %}
