@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+      
+  </head>
+<body>
+<section class="pt-5 pb-5 mt-0 align-items-center d-flex bg-dark" style="min-height: 100vh; background-size: cover; background-image: linear-gradient(180deg,#171C1F,#344378,#2B3439);">
+  <div class="container-fluid">
+    <div class="row  justify-content-center align-items-center d-flex-row text-center h-100">
+      <div class="col-12 col-md-4 col-lg-3   h-50 ">
+        <div class="card shadow">
+          <div class="card-body mx-auto">
+            <h4 class="card-title mt-3 text-center">Login</h4>
+            <p class="text-center">Login to use our services</p>
+            <p>
+              <a href="" class="btn btn-block btn-info">
+                <i class="fab fa-twitter mr-2"></i>Login via Twitter</a>
+              <a href="" class="btn btn-block btn-primary">
+                <i class="fab fa-facebook-f mr-2"></i>Login via facebook</a>
+            </p>
+            <p class="text-muted font-weight-bold ">
+              <span>OR</span>
+            </p>
+            {{message}}
+            <form action ='.' method='POST'>{% csrf_token %}
+              <div class="form-group input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
+                </div>
+                <input name="email" class="form-control" placeholder="Email Address" type="text" value="">
+              </div>
+              <div class="form-group input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                </div>
+                <input name="pass1" class="form-control" placeholder="Password" type="password">
+              </div>
+              <div class="form-group">
+                <!--input type="submit" value="Submit"-->
+                <button type="submit" class="btn btn-primary btn-block"> Login </button>
+              </div>
+              <p class="text-center">Don't Have an account?
+                <a href="">Sign up for Free</a>
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+  
+
+</body>
+<style>
+  .card{
+    background-color:  #EDE4DA;
+  }
+  .btn-primary{
+    background-color: #5E96D6;
+  }
+</style>
+</html>
