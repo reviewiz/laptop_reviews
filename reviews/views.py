@@ -1,6 +1,8 @@
 from django.shortcuts import render
 import pandas as pd
 import urllib.request
+import requests
+import json
 # Create your views here.
 def get_advanced_df(data,brand,ub,lb,sort,Processor,RAM,screen,Hard_disk):
     table = pd.DataFrame(columns = data.columns)
@@ -132,3 +134,24 @@ def product(request):
     's5':list(aspect.loc[aspect['Words']==aspect['Words'].unique()[4]]['sentences'])
     }
     return render(request, 'product.html',context)
+def login(request):
+    try:
+        email=request.POST['email']
+        password=request.POST['pass1']
+        url = 'http://reviewiz.onrender.com/api/account/login/'
+        payload = {
+        "email": email,
+        "password":password
+        }
+        headers = {'content-type': 'application/json', 'Accept-Charset': 'UTF-8'}
+        r = requests.post(url, data=json.dumps(payload), headers=headers)
+        data=r.json()
+        if 'access' in data:
+            request.session['access'] = data['access']
+            request.session['refresh'] = data['refresh']
+        context={'message':data['message']} 
+    except:
+        context={}
+    return render(request, 'login.html',context)
+#def signup(request):
+    
