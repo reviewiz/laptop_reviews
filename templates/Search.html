@@ -3,10 +3,6 @@
 {% block title %}
   Advanced Search
 {% endblock %}
-{% block page_heading%}
-  Laptop Reviews
-  <!--Page heading-->
-{% endblock %}
 {% block content %}
   <!--providing query to our database -->
   <div class="main_div">
@@ -133,7 +129,7 @@
           </div>
           <br>
           <div class="name_holder">
-            <a class="product_link" href="./Product/?code={{i.Product_code}}">
+            <a class="product_link" href="{%url 'Product'%}?code={{i.Product_code}}">
             <span class="details"><h4>{{i.Product_name|truncatechars:33}}</h4></span>
             <br>
             <span class="details"><h5>Price : &#8377; {{i.Price}}</h5></span>

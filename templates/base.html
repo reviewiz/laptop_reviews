@@ -19,13 +19,13 @@
         </title>
    </head>
    <body>
-        <h1 class="page_heading">
+        <a class="home_page_link" href="{%url 'index'%}"><h1 class="page_heading">
             {% block page_heading%}
             {% endblock %}
-        </h1>
+        </h1></a>
       <!-- Navbar here -->
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top">
-            <a class="navbar-brand" href="https://laptopreviews2021.herokuapp.com">Laptop Reviews</a>
+            <a class="navbar-brand" href="{%url 'index'%}">Laptop Reviews</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -39,6 +39,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{%url 'login' %}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{%url 'register' %}">Sign Up</a>
                 </li>
             </ul>
         </div>
@@ -74,16 +77,24 @@
             body {
                 font-family: "Ubuntu Condensed";
                 background-color: #d3d3d3;
-                background-image: linear-gradient(315deg, #44355b 0%, #57606f 74%);
+                background-image: linear-gradient(180deg,#171C1F,#344378,#2B3439);
             }
             .page_heading{
                 font-family: "Ubuntu Condensed";
                 text-align:center; 
                 color: white;
+                background-color: #171C1F;
             }
             .product_link{
                 color:white;
             }
+            .bg-dark{
+                background-color: #1C1A15!important;
+            }
         }
+        .home_page_link:link { text-decoration: none; }
+        .home_page_link:visited { text-decoration: none; }
+        .home_page_link:hover { text-decoration: none; }
+        .home_page_link:active { text-decoration: none; }
     </style>
 </html>

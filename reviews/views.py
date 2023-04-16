@@ -153,5 +153,24 @@ def login(request):
     except:
         context={}
     return render(request, 'login.html',context)
-#def signup(request):
-    
+def signup(request):
+    try:
+        email=request.POST['email']
+        password=request.POST['pass1']
+        password1=request.POST['pass2']
+        url = 'http://reviewiz.onrender.com/api/account/registration/'
+        payload = {
+            "email": email,
+            "password":password,
+            "password2":password1,
+        }
+        headers = {'content-type': 'application/json', 'Accept-Charset': 'UTF-8'}
+        r = requests.post(url, data=json.dumps(payload), headers=headers)
+        data=r.json()
+        if 'access' in data:
+            request.session['access'] = data['access']
+            request.session['refresh'] = data['refresh']
+        context={'message':data['message']} 
+    except:
+        context={}
+    return render(request, 'Register.html',context)

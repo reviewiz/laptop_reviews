@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}
-  Login
+ Sign Up
 {% endblock %}
     {% block link_scripts %}
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
@@ -9,27 +9,27 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" rel="stylesheet" crossorigin="anonymous">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     {% endblock %}
-
 {% block content %}
 <section class="pt-5 pb-5 mt-0 align-items-center d-flex" style="min-height: 100vh;">
   <div class="container-fluid">
+    
     <div class="row  justify-content-center align-items-center d-flex-row text-center h-100">
       <div class="col-12 col-md-4 col-lg-3   h-50 ">
         <div class="card shadow">
           <div class="card-body mx-auto">
-            <h4 class="card-title mt-3 text-center">Login</h4>
-            <p class="text-center">Login to use our services</p>
+            <h4 class="card-title mt-3 text-center">Create Account</h4>
+            <p class="text-center">Get started with your free account</p>
             <p>
               <a href="" class="btn btn-block btn-info">
-                <i class="fab fa-twitter mr-2"></i>Login via Twitter</a>
+                <i class="fab fa-twitter mr-2"></i>Sign up via Twitter</a>
               <a href="" class="btn btn-block btn-primary">
-                <i class="fab fa-facebook-f mr-2"></i>Login via facebook</a>
+                <i class="fab fa-facebook-f mr-2"></i>Sign up via facebook</a>
             </p>
             <p class="text-muted font-weight-bold ">
               <span>OR</span>
             </p>
             {{message}}
-            <form action ='.' method='POST'>{% csrf_token %}
+            <form action="{%url 'register'%}" method="post">{% csrf_token %}
               <div class="form-group input-group">
                 <div class="input-group-prepend">
                   <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
@@ -40,14 +40,20 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                 </div>
-                <input name="pass1" class="form-control" placeholder="Password" type="password">
+                <input name="pass1" class="form-control" placeholder="Create Password" type="password">
+              </div>
+              <div class="form-group input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                </div>
+                <input name="pass2" class="form-control" placeholder="Confirm Password" type="password">
               </div>
               <div class="form-group">
                 <!--input type="submit" value="Submit"-->
-                <button type="submit" class="btn btn-primary btn-block"> Login </button>
+                <button type="submit" class="btn btn-primary btn-block"> Create Account </button>
               </div>
-              <p class="text-center">Don't Have an account?
-                <a href="">Sign up for Free</a>
+              <p class="text-center">Have an account?
+                <a href="">Log In</a>
               </p>
             </form>
           </div>
@@ -56,7 +62,7 @@
     </div>
   </div>
 </section>
-  
+ 
 {% endblock %}
 {% block style %}
 <style>
