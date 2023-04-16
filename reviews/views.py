@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 import pandas as pd
 import urllib.request
 import requests
@@ -37,13 +37,17 @@ def get_advanced_df(data,brand,ub,lb,sort,Processor,RAM,screen,Hard_disk):
       table=table.loc[table['Hard_drive'].isin(Hard_disk)]
     return table
 def index(request):
+    if 'access' in request.session:
+        logged_in=True
+    else:
+        logged_in=False
     all_data=[]
     data = pd.read_csv('https://raw.githubusercontent.com/DibyaSadhukhan/Amazon_Review_Analysis/main/Data/Top_products.csv')
     data=data.drop(data.columns[0], axis=1)
     message="Top 5 most reveiwed products"
     for i in range(data.shape[0]):
         all_data.append(dict(data.iloc[i]))
-    context={'data':all_data,'query':message}
+    context={'data':all_data,'query':message,'logged_in':logged_in}
     del data
     return render(request, 'index.html',context)
 def search(request):
@@ -146,11 +150,16 @@ def login(request):
         headers = {'content-type': 'application/json', 'Accept-Charset': 'UTF-8'}
         r = requests.post(url, data=json.dumps(payload), headers=headers)
         data=r.json()
-        if 'access' in data:
-            request.session['access'] = data['access']
-            request.session['refresh'] = data['refresh']
+        print('access' in data['token'])
+        if 'access' in data['token']:
+            #print(data['token']['access'])
+            request.session['access'] = data['token']['access']
+            request.session['refresh'] = data['token']['refresh']
+            return redirect(index)
+        print(request.session['access'])
         context={'message':data['message']} 
-    except:
+    except(Exception) as error:
+        print(error)
         context={}
     return render(request, 'login.html',context)
 def signup(request):
@@ -170,7 +179,11 @@ def signup(request):
         if 'access' in data:
             request.session['access'] = data['access']
             request.session['refresh'] = data['refresh']
+        print('yo')
+        print(request.session['access'])
         context={'message':data['message']} 
-    except:
+    except(Exception) as error:
+        print(error)
         context={}
+
     return render(request, 'Register.html',context)

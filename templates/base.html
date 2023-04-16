@@ -19,10 +19,6 @@
         </title>
    </head>
    <body>
-        <a class="home_page_link" href="{%url 'index'%}"><h1 class="page_heading">
-            {% block page_heading%}
-            {% endblock %}
-        </h1></a>
       <!-- Navbar here -->
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top">
             <a class="navbar-brand" href="{%url 'index'%}">Laptop Reviews</a>
@@ -37,15 +33,27 @@
                 <li class="nav-item">
                     <a class="nav-link" href="https://mail.google.com/mail/?view=cm&fs=1&to=dibyasadhukhan%40gmail.com&authuser=0">Contact us</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{%url 'login' %}">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{%url 'register' %}">Sign Up</a>
-                </li>
+                {%if logged_in%}
+                    <li class="nav-item">
+                        <a class="nav-link" href="">Profile</a>
+                    </li>
+                {%else%}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{%url 'login' %}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{%url 'register' %}">Sign Up</a>
+                    </li>
+                {%endif%}
             </ul>
         </div>
         </nav>
+        {%if message%}
+        <div class="notification">
+            
+            {{message}}
+        </div>
+        {%endif%}
       <!-- the content of the page -->
         {% block content %}
 
@@ -57,44 +65,23 @@
 
     {% endblock %}
    <style>
-        @media (prefers-color-scheme: light) {
-            body{
-                font-family: "Ubuntu Condensed";
-                background-color: #ffffff;
-                background-image: linear-gradient(315deg, #ffffff 0%, #d7e1ec 74%);
-            }
-            .page_heading{
-                font-family: "Ubuntu Condensed";
-                text-align:center; 
-                color: black;
-            }
-            .product_link{
-                color:black;
-            }
-        }
         /* Dark mode */
-        @media (prefers-color-scheme: dark) {
-            body {
-                font-family: "Ubuntu Condensed";
-                background-color: #d3d3d3;
-                background-image: linear-gradient(180deg,#171C1F,#344378,#2B3439);
-            }
-            .page_heading{
-                font-family: "Ubuntu Condensed";
-                text-align:center; 
-                color: white;
-                background-color: #171C1F;
-            }
-            .product_link{
-                color:white;
-            }
-            .bg-dark{
-                background-color: #1C1A15!important;
-            }
+        body {
+            font-family: "Ubuntu Condensed";
+            background-color: #d3d3d3;
+            background-image: linear-gradient(180deg,#171C1F,#344378,#2B3439);
         }
-        .home_page_link:link { text-decoration: none; }
-        .home_page_link:visited { text-decoration: none; }
-        .home_page_link:hover { text-decoration: none; }
-        .home_page_link:active { text-decoration: none; }
+        .page_heading{
+            font-family: "Ubuntu Condensed";
+            text-align:center; 
+            color: white;
+            background-color: #171C1F;
+        }
+        .product_link{
+            color:white;
+        }
+        .bg-dark{
+            background-color: #1C1A15!important;
+        }
     </style>
 </html>
